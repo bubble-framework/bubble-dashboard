@@ -1,16 +1,19 @@
-import { createError } from 'http-errors';
+import createError from 'http-errors';
 import express from 'express';
-import usersRouter from './routes/aws.js';
+import awsRouter from './routes/aws.js';
 
 const app = express();
+const PORT = 3005;
 
+app.use('/', awsRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
 
-app.listen(3000, function () {
-  console.log('Example app listening on port ' + port + '!');
+app.listen(PORT, function () {
+  console.log('Database is listening on port ' + PORT + '!');
 });
+
 
 export default app;

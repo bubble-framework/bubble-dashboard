@@ -1,9 +1,9 @@
 import express from 'express';
-import router from express.Router();
+const router = express.Router();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.json({ "success": "yay" });
 });
 
 export default router;
