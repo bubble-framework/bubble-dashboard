@@ -1,4 +1,4 @@
-const { exec } = require("child_process");
+import { exec } from "child_process";
 
 const wrapExecCmd = (cmd, errMsg) => {
   return new Promise((resolve, reject) => {
@@ -18,6 +18,4 @@ const wrapExecCmd = (cmd, errMsg) => {
   });
 }
 
-module.exports = {
-  wrapExecCmd
-}
+export default wrapExecCmd;

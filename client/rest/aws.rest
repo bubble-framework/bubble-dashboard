@@ -1,0 +1,9 @@
+POST dynamodb.us-east-1.amazonaws.com?Action=Scan
+Content-Type: application/x-amz-json-1.0
+X-Amz-Target: DynamoDB_20120810.Scan
+X-Amz-Date: 20220718
+Authorization: AWS4-HMAC-SHA256 Credential=AKIA4BMJ54IYLXATSM6R/Q92mgbTBvgGSuiy3MdpdYh68qlXb7tw9MIsYFKhq4/us-east-1/dynamodb/aws4_request, SignedHeaders=host;range;X-Amz-Date, Signature=fe5f80f77d5fa3beca038a248ff027d0445342fe2855ddc963176630326f1025
+
+{
+  "TableName": "color-app-PreviewApps"
+}
