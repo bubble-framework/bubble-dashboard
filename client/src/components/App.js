@@ -16,6 +16,7 @@ const App = () => {
       const names = await getRepos();
       setRepos(names);
     }
+
     getRepoNames();
   }, [])
 
@@ -27,7 +28,7 @@ const App = () => {
         </ul>
       </nav>
       <Routes>
-        {repos.map(repo => <Route path="/:repoName" element={<Repo />} />)}
+        {repos.map(repo => <Route path="/:repoName" element={<Repo repos={repos} />} />)}
       </Routes>
     </div>
   );
