@@ -1,26 +1,34 @@
 import '../App.css';
 import { useEffect, useState } from 'react';
-import { getCurrentRepoApps } from '../services/awsService.js';
-import Branch from './Branch.js';
+import { getRepos } from '../services/dataService.js';
+import Repo from './Repo.js';
+import {
+  Routes,
+  Route,
+  Link,
+} from "react-router-dom";
 
-const App = (repo) => {
-  repo = 'color-app'
-  const [apps, setApps] = useState([]);
+const App = () => {
+  const [repos, setRepos] = useState([]);
 
   useEffect(() => {
-    const getApps = async () => {
-      const apps = await getCurrentRepoApps(repo);
-      setApps(apps);
-    };
-    getApps();
-  }, [repo])
+    const getRepoNames = async () => {
+      const names = await getRepos();
+      setRepos(names);
+    }
+    getRepoNames();
+  }, [])
 
   return (
     <div>
-      <h1>{repo}</h1>
-      <div>
-        {apps.map(app => <Branch pullRequest={app} key={app.id} />)}
-      </div>
+      <nav>
+        <ul>
+          {repos.map(repo => <Link key={repo.repoName} to={`/${repo.repoName}`}>{repo.repoName}</Link>)}
+        </ul>
+      </nav>
+      <Routes>
+        {repos.map(repo => <Route path="/:repoName" element={<Repo />} />)}
+      </Routes>
     </div>
   );
 }
