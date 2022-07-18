@@ -10,7 +10,9 @@
     "@aws-sdk/credential-providers": "^3.131.0",
     "cors": "^2.8.5",
     "express": "~4.16.1",
-    "http-errors": "~1.6.3"
+    "fs": "^0.0.1-security",
+    "http-errors": "~1.6.3",
+    "path": "^0.12.7"
   },
   "type": "module"
 }
