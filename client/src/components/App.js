@@ -1,7 +1,7 @@
 import '../App.css';
 import { useEffect, useState } from 'react';
-import { getApp } from '../services/awsService.js';
-import PreviewApp from './previewApp.js';
+import { getCurrentRepoApps } from '../services/awsService.js';
+import Branch from './Branch.js';
 
 const App = (repo) => {
   repo = 'color-app'
@@ -9,7 +9,7 @@ const App = (repo) => {
 
   useEffect(() => {
     const getApps = async () => {
-      const apps = await getApp(repo);
+      const apps = await getCurrentRepoApps(repo);
       setApps(apps);
     };
     getApps();
@@ -19,9 +19,7 @@ const App = (repo) => {
     <div>
       <h1>{repo}</h1>
       <div>
-        <ul>
-          {apps.forEach(app => <PreviewApp detail={app} />)}
-        </ul>
+        {apps.map(app => <Branch pullRequest={app} key={app.id} />)}
       </div>
     </div>
   );

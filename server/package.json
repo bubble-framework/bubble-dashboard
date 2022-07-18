@@ -6,10 +6,11 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "~4.16.1",
-    "http-errors": "~1.6.3",
     "@aws-sdk/client-dynamodb": "^3.131.0",
-    "@aws-sdk/credential-providers": "^3.131.0"
+    "@aws-sdk/credential-providers": "^3.131.0",
+    "cors": "^2.8.5",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3"
   },
   "type": "module"
 }

@@ -19,17 +19,23 @@ const parseTable = async (table) => {
   const parsed = [];
   table.forEach(pullRequest => {
     if (pullRequest.IsActive.BOOL) {
+      const PRInfo = {};
+      PRInfo.id = pullRequest.PullRequestId.N;
+      PRInfo.name = pullRequest.PRName.S;
+      PRInfo.commits = [];
+
       pullRequest.Commits.L.forEach(commit => {
         const detail = {};
-        detail.pull_request_id = pullRequest.PullRequestId.N;
-        detail.pull_request_name = pullRequest.PRName.S;
         detail.commit_id = commit.M.CommitId.S.slice(0, 7);
         detail.commit_message = commit.M.CommitMessageHeader.S;
         detail.created_at = commit.M.CreatedAt.S;
         detail.url = 'https://' + commit.M.CloudfrontSubdomain.S + '.cloudfront.net';
-        parsed.push(detail);
+        PRInfo.commits.push(detail);
       })
+
+      parsed.push(PRInfo);
     }
   })
+
   return parsed;
 };
