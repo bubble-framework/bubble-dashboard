@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Branch from './Branch.js';
-import { getCurrentRepoApps, destroyRepo } from '../services/dataService.js';
+import { getCurrentRepoApps, destroyRepo, teardownRepo } from '../services/dataService.js';
 import { confirmAlert } from 'react-confirm-alert';
 
 const Repo = ({ repos }) => {
   const { repoName } = useParams();
   const [apps, setApps] = useState([]);
   const [status, setStatus] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const getApps = async () => {
@@ -43,10 +44,40 @@ const Repo = ({ repos }) => {
     });
   }
 
+  const teardownAttempt = async () => {
+    try {
+      await teardownRepo(repoName);
+      setErrorMessage("")
+    } catch (err) {
+      setErrorMessage(err.request.response);
+      setTimeout(() => {
+        setErrorMessage("")
+      }, 2000)
+    }
+  }
+
+  const handleTeardownClick = async (e) => {
+    e.preventDefault();
+    confirmAlert({
+      title: 'Confirm to submit',
+      message: 'Lambda deletion may not be ready yet, would you still like to try?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: async () => await teardownAttempt()
+        },
+        {
+          label: 'No'
+        }
+      ]
+    });
+  }
+
   if (!apps && status === "active") return null;
 
   return (
     <>
+      <p>{errorMessage}</p>
       {status === "active" ?
         <div>
           <h1>{repoName}</h1>
@@ -55,7 +86,10 @@ const Repo = ({ repos }) => {
           </div>
           <button onClick={handleDestroyClick}>Destroy App</button>
         </div>
-        : <div>The bubble for this {repoName} is being destroyed; try bubble teardown to see if lambdas are ready to be deleted.</div>
+        : <div>
+          <p>The bubble for this {repoName} is being destroyed; try bubble teardown to see if lambdas are ready to be deleted.</p>
+          <button onClick={handleTeardownClick}>teardown app</button>
+        </div>
       }
     </>
   )

@@ -20,3 +20,8 @@ export const destroyRepo = async (repoName) => {
   const response = await axios.post(`${baseURL}/${repoName}/destroy`);
   return response.status;
 }
+
+export const teardownRepo = async (repoName) => {
+  const response = await axios.post(`${baseURL}/${repoName}/teardown`);
+  return response;
+}

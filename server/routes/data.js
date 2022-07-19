@@ -41,7 +41,7 @@ router.post('/:repoName/teardown', async function (req, res, next) {
     }
     console.log(stdout);
     if (stdout.includes("some Lambdas are not ready to be deleted yet")) {
-      res.status(500).send("not ready");
+      res.status(500).send("Lambdas not ready to be deleted yet, please try again later");
     } else {
       res.status(200).send("Lambdas are being deleted right now");
     }
