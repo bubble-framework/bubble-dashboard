@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Branch from './Branch.js';
-import { getCurrentRepoApps } from '../services/dataService.js';
+import { getCurrentRepoApps, destroyRepo } from '../services/dataService.js';
+import { confirmAlert } from 'react-confirm-alert';
 
 const Repo = ({ repos }) => {
   const { repoName } = useParams();
@@ -25,6 +26,23 @@ const Repo = ({ repos }) => {
     getApps();
   }, [repoName])
 
+  const handleDestroyClick = async (e) => {
+    e.preventDefault();
+    confirmAlert({
+      title: 'Confirm to submit',
+      message: 'Are you sure you want to delete all preview apps for this repo?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: async () => await destroyRepo(repoName)
+        },
+        {
+          label: 'No'
+        }
+      ]
+    });
+  }
+
   if (!apps && status === "active") return null;
 
   return (
@@ -35,6 +53,7 @@ const Repo = ({ repos }) => {
           <div>
             {apps.map(app => <Branch pullRequest={app} key={app.id} />)}
           </div>
+          <button onClick={handleDestroyClick}>Destroy App</button>
         </div>
         : <div>The bubble for this {repoName} is being destroyed; try bubble teardown to see if lambdas are ready to be deleted.</div>
       }

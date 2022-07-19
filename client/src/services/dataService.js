@@ -15,3 +15,8 @@ export const getRepos = async () => {
   const repos = await axios.get(`${baseURL}/all`);
   return repos.data;
 }
+
+export const destroyRepo = async (repoName) => {
+  const response = await axios.post(`${baseURL}/${repoName}/destroy`);
+  return response.status;
+}
