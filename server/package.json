@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "dashboard": "node app.js & npm --prefix ../client/ run start"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.131.0",
