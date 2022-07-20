@@ -25,9 +25,9 @@ const App = () => {
   return (
     <div>
       <nav>
-        <ul>
+        {/* <ul>
           {repos.map(repo => <Link key={repo.repoName} to={`/${repo.repoName}`}>{repo.repoName}</Link>)}
-        </ul>
+        </ul> */}
       </nav>
       <Routes>
         {repos.map((_repo) => <Route path="/:repoName" element={<Repo repos={repos} />} />)}

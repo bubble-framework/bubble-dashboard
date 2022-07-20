@@ -4,6 +4,8 @@ import Branch from './Branch.js';
 import { getCurrentRepoApps, destroyRepo, teardownRepo } from '../services/dataService.js';
 import { confirmAlert } from 'react-confirm-alert';
 
+import bubbleLogo from '../static/images/random_icon.png';
+
 const Repo = ({ repos }) => {
   const { repoName } = useParams();
   const [apps, setApps] = useState([]);
@@ -79,19 +81,39 @@ const Repo = ({ repos }) => {
     <>
       <p>{errorMessage}</p>
       {status === "active" ?
-        <div className="container mx-auto bg-gray-200 rounded-xl shadow border p-8 m-10">
+      <>
+      <div className="relative container mx-auto bg-blue-100 p-6">
+        <div className="flex items-center justify-between">
+          <nav className="w-1/4 relative container mx-auto bg-red-300 p-6">
+            {/* flex container */}
+            <div className="flex-col items-center justify-between">
+              <div className="pt 2 bg-red-400">
+                <img className="w-20" src={bubbleLogo} alt="Bubble Logo" />
+              </div>
+              <div className="md:flex-col pt-5 flex bg-red-400 justify-between">
+                Repositories
+                {repos.map(({ repoName }) => (
+                  <a className="pt-1 bg-red-500" href="#">{repoName}</a>
+                ))}
+              </div>
+            </div>
+          </nav>
+
+          <div className="relative container mx-auto bg-green-200 p-6 grow">
           <h1>{repoName}</h1>
-          <p>Testing testing 123...</p>
-          <div>
-            {apps.map(app => <Branch pullRequest={app} key={app.id} />)}
+            <div>
+              {apps.map(app => <Branch pullRequest={app} key={app.id} />)}
+            </div>
+            <button onClick={handleDestroyClick}>Destroy App</button>
           </div>
-          <button onClick={handleDestroyClick}>Destroy App</button>
         </div>
+      </div>
+      </>
         : <div>
           <p>The bubble for this {repoName} is being destroyed; try bubble teardown to see if lambdas are ready to be deleted.</p>
           <button onClick={handleTeardownClick}>teardown app</button>
         </div>
-      }
+        }
     </>
   )
 }
