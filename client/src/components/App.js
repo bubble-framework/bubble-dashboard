@@ -1,7 +1,12 @@
 import '../App.css';
 import { useEffect, useState } from 'react';
 import { getRepos } from '../services/dataService.js';
+
 import Repo from './Repo.js';
+import Header from './Header.js';
+import NavBar from './NavBar.js';
+import Content from './Content.js';
+
 import {
   Routes,
   Route,
@@ -22,6 +27,13 @@ const App = () => {
 
   return (
     <div>
+      <div className="App h-screen overflow-y-scroll scrollbar-hide overflow-x-hidden px-6">
+        <Header />
+        <div className="flex items-start space-x-2 justify-start w-full">
+          <NavBar />
+          <Content />
+        </div>
+      </div>
       <nav>
         <ul>
           {repos.map(repo => <Link key={repo.repoName} to={`/${repo.repoName}`}>{repo.repoName}</Link>)}
