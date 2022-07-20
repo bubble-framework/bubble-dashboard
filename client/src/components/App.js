@@ -22,16 +22,32 @@ const App = () => {
 
   return (
     <div>
+
       <nav>
         <ul>
-          {repos.map(repo => <Link key={repo.repoName} to={`/${repo.repoName}`}>{repo.repoName}</Link>)}
+          {repos.map(repo =>
+            <>
+              <Link key={repo.repoName} to={`/${repo.repoName}`}>
+                {repo.repoName}
+              </Link>
+
+              {' — '}
+            </>
+          )}
         </ul>
       </nav>
+
       <Routes>
-        {repos.map(repo => <Route path="/:repoName" element={<Repo repos={repos} />} />)}
+        {repos.map(repo =>
+          <Route
+            key={repo.repoName}
+            path="/:repoName"
+            element={<Repo repos={repos} />}
+          />
+        )}
       </Routes>
     </div>
   );
-}
+};
 
 export default App;
