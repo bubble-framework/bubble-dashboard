@@ -79,8 +79,9 @@ const Repo = ({ repos }) => {
     <>
       <p>{errorMessage}</p>
       {status === "active" ?
-        <div>
+        <div className="container mx-auto bg-gray-200 rounded-xl shadow border p-8 m-10">
           <h1>{repoName}</h1>
+          <p>Testing testing 123...</p>
           <div>
             {apps.map(app => <Branch pullRequest={app} key={app.id} />)}
           </div>
