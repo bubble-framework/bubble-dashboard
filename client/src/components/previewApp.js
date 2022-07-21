@@ -9,7 +9,7 @@ const PreviewApp = ({ detail }) => {
         <p><a href={detail.url}>Link to App</a></p>
       </li>
     </>
-  )
-}
+  );
+};
 
 export default PreviewApp;
