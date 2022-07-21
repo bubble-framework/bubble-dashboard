@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 import { getRepos } from '../services/dataService.js';
 
 import Repo from './Repo.js';
+import Sidebar from './Sidebar.js';
 
 import {
   Routes,
   Route,
-  Link,
 } from "react-router-dom";
 
 const App = () => {
@@ -23,16 +23,16 @@ const App = () => {
   }, [])
 
   return (
-    <div>
-      <nav>
-        {/* <ul>
-          {repos.map(repo => <Link key={repo.repoName} to={`/${repo.repoName}`}>{repo.repoName}</Link>)}
-        </ul> */}
-      </nav>
-      <Routes>
-        {repos.map((_repo) => <Route path="/:repoName" element={<Repo repos={repos} />} />)}
-      </Routes>
-    </div>
+    <>
+      <div className="relative container mx-auto p-6">
+        <div className="flex items-start justify-between">
+          <Sidebar repos={repos} />
+          <Routes>
+            {repos.map((_repo) => <Route path="/:repoName" element={<Repo repos={repos} />} />)}
+          </Routes>
+        </div>
+      </div>
+    </>
   );
 }
 

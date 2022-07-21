@@ -6,8 +6,6 @@ import Branch from './Branch.js';
 import { getCurrentRepoApps, destroyRepo, teardownRepo } from '../services/dataService.js';
 import { confirmAlert } from 'react-confirm-alert';
 
-import bubbleLogo from '../static/images/noun_project_bubbles.png';
-
 const Repo = ({ repos }) => {
   const { repoName } = useParams();
   const [apps, setApps] = useState([]);
@@ -84,42 +82,19 @@ const Repo = ({ repos }) => {
       <p>{errorMessage}</p>
       {status === "active" ?
       <>
-      <div className="relative container mx-auto p-6">
-        <div className="flex items-start justify-between">
-          <nav className="w-1/4 relative container mx-auto p-6">
-            {/* flex container */}
-            <div className="flex-col items-center justify-between">
-              <div className="pt-2">
-                <img className="w-12 pt-5" src={bubbleLogo} alt="Bubble Logo" />
-              </div>
-              <div className="md:flex-col pt-5 flex  justify-between">
-                <p className="py-3 text-xl font-semibold text-indigo-500">
-                  Repositories
-                </p>
-                {repos.map(({ repoName }) => (
-                  <a className="pt-1" href="#">
-                    {repoName}
-                  </a>
-                ))}
-              </div>
-            </div>
-          </nav>
-
-          <div className="relative container mx-auto rounded-lg bg-gradient-to-r from-red-100 to-indigo-200 p-10 grow">
+        <div className="relative container mx-auto rounded-lg bg-gradient-to-r from-red-100 to-indigo-200 p-10 grow">
           <h1 className="text-xl font-bold">{repoName}</h1>
-            <div>
-              {apps.map(app => <Branch pullRequest={app} key={app.id} />)}
-            </div>
-            <div className="flex justify-end px-6 py-3">
-              <button 
-                className="bg-red-500 rounded-full p-3 text-white font-bold"
-                onClick={handleDestroyClick}>
-                Destroy App
-              </button>
-            </div>
+          <div>
+            {apps.map(app => <Branch pullRequest={app} key={app.id} />)}
+          </div>
+          <div className="flex justify-end px-6 py-3">
+            <button 
+              className="bg-red-500 rounded-full p-3 text-white font-bold"
+              onClick={handleDestroyClick}>
+              Destroy App
+            </button>
           </div>
         </div>
-      </div>
       </>
         : <div>
           <p>The bubble for this {repoName} is being destroyed; try bubble teardown to see if lambdas are ready to be deleted.</p>
