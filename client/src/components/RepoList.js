@@ -6,7 +6,13 @@ const RepoList = ({ repos }) => (
       <Link to="/">Repositories</Link>
     </p>
     {repos.map(({ repoName }) => (
-      <Link className="pt-1" to={repoName}>{repoName}</Link>
+      <Link
+        key={repoName}
+        className="pt-1"
+        to={repoName}
+      >
+        {repoName}
+      </Link>
     ))}
   </div>
 );

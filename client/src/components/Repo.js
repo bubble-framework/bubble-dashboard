@@ -8,10 +8,16 @@ import { getCurrentRepoApps, destroyRepo, teardownRepo } from '../services/dataS
 import { confirmAlert } from 'react-confirm-alert';
 
 const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
+  const NEUTRAL_MESSAGE_COLOR = "zinc";
+  const POSITIVE_MESSAGE_COLOR = "green";
+  const NEGATIVE_MESSAGE_COLOR = "red";
+  
   const { repoName } = useParams();
   const [ apps, setApps ] = useState([]);
   const [ status, setStatus ] = useState("");
-  const [ errorMessage, setErrorMessage ] = useState("");
+
+  const [ message, setMessage ] = useState("");
+  const [ messageColor, setMessageColor ] = useState(NEUTRAL_MESSAGE_COLOR);
 
   useEffect(() => {
     const getApps = async () => {
@@ -57,24 +63,24 @@ const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
 
   const teardownAttempt = async () => {
     try {
-      await teardownRepo(repoName);
-      setErrorMessage("");
+      const successMessage = await teardownRepo(repoName);
+      console.log(successMessage);
+
+      setMessageColor(POSITIVE_MESSAGE_COLOR);
+      setMessage(successMessage);
     } catch (err) {
-      setErrorMessage(err.request.response);
+      setMessageColor(NEGATIVE_MESSAGE_COLOR);
+      setMessage(err);
 
       setTimeout(() => {
-        setErrorMessage("");
+        setMessage("");
       }, 5000);
     }
-
-    setModalVisible(false);
   }
 
   const handleTeardownClick = async (e) => {
     e.preventDefault();
 
-    setModalMessage("Lambda functions may not be ready for deletion, but you can still try. Continue?");
-    setModalVisible(true);
     setModalAction(async () => await teardownAttempt());
 
     // confirmAlert({
@@ -96,8 +102,6 @@ const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
 
   return (
     <>
-      <p>{errorMessage}</p>
-
       {status === "active" ?
       <>
         <div className="relative container mx-auto rounded-lg bg-gradient-to-r from-red-100 to-indigo-200 p-10 grow">
@@ -116,10 +120,28 @@ const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
           </div>
         </div>
       </>
-        : <div>
-          <p>The bubble for this {repoName} is being destroyed; try bubble teardown to see if lambdas are ready to be deleted.</p>
-
-          <button onClick={handleTeardownClick}>teardown app</button>
+        : 
+        <div className="flex-col w-full">
+          {message
+            ? <p className={`relative container mx-auto rounded-lg border-4 border-${messageColor}-300 p-5 grow mt-4 text-sm`}>
+              {message}
+            </p>
+            : ''
+          }
+          <div className="relative container mx-auto rounded-lg border-4 border-indigo-300 p-10 grow mt-9">
+            <div className="flex-col">
+              <p className="mb-6">
+                The bubble for the repository <span className="font-bold">{repoName}</span> is being destroyed. Try tearing down to see if Lambdas are ready to be deleted.
+              </p>
+              <div className="flex justify-center">
+                <Button
+                  text="Teardown"
+                  color="red"
+                  onButtonClick={handleTeardownClick}
+                />
+              </div>
+            </div>
+        </div>
         </div>
         }
     </>
