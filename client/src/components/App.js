@@ -28,12 +28,18 @@ const App = () => {
         <div className="flex items-start justify-between z-0">
           <Sidebar repos={repos} />
           <Routes>
-            {repos.map((_repo) => <Route path="/:repoName" element={<Repo repos={repos} />} />)}
+            {repos.map((repo) =>
+              <Route
+                path="/:repoName"
+                key={repo.repoName}
+                element={<Repo repos={repos}/>}
+              />
+            )}
           </Routes>
         </div>
       </div>
     </>
   );
-}
+};
 
 export default App;

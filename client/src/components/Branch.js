@@ -10,7 +10,7 @@ const Branch = ({ pullRequest }) => {
         {pullRequest.commits.map(app => <PreviewApp detail={app} key={app.commit_id} />)}
       </ul>
     </div>
-  )
-}
+  );
+};
 
 export default Branch;

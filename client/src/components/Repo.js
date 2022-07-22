@@ -8,9 +8,9 @@ import { confirmAlert } from 'react-confirm-alert';
 
 const Repo = ({ repos }) => {
   const { repoName } = useParams();
-  const [apps, setApps] = useState([]);
-  const [status, setStatus] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [ apps, setApps ] = useState([]);
+  const [ status, setStatus ] = useState("");
+  const [ errorMessage, setErrorMessage ] = useState("");
 
   useEffect(() => {
     const getApps = async () => {
@@ -20,27 +20,29 @@ const Repo = ({ repos }) => {
 
     const getStatus = () => {
       if (repos.length === 0) {
-        setStatus("destroyed")
+        setStatus("destroyed");
       }
+
       setStatus(repos.find(repo => repo.repoName === repoName).status);
     }
 
     getStatus();
     getApps();
-  }, [repoName])
+  }, [repoName]);
 
   const handleDestroyClick = async (e) => {
     e.preventDefault();
+
     confirmAlert({
       title: 'Confirm to submit',
       message: 'Are you sure you want to delete all preview apps for this repo?',
       buttons: [
         {
           label: 'Yes',
-          onClick: async () => await destroyRepo(repoName)
+          onClick: async () => await destroyRepo(repoName),
         },
         {
-          label: 'No'
+          label: 'No',
         }
       ]
     });
@@ -49,27 +51,29 @@ const Repo = ({ repos }) => {
   const teardownAttempt = async () => {
     try {
       await teardownRepo(repoName);
-      setErrorMessage("")
+      setErrorMessage("");
     } catch (err) {
       setErrorMessage(err.request.response);
+
       setTimeout(() => {
-        setErrorMessage("")
-      }, 2000)
+        setErrorMessage("");
+      }, 5000);
     }
   }
 
   const handleTeardownClick = async (e) => {
     e.preventDefault();
+
     confirmAlert({
       title: 'Confirm to submit',
       message: 'Lambda deletion may not be ready yet, would you still like to try?',
       buttons: [
         {
           label: 'Yes',
-          onClick: async () => await teardownAttempt()
+          onClick: async () => await teardownAttempt(),
         },
         {
-          label: 'No'
+          label: 'No',
         }
       ]
     });
@@ -80,12 +84,15 @@ const Repo = ({ repos }) => {
   return (
     <>
       <p>{errorMessage}</p>
+
       {status === "active" ?
       <>
         <div className="relative container mx-auto rounded-lg bg-gradient-to-r from-red-100 to-indigo-200 p-10 grow">
           <h1 className="text-xl font-bold">{repoName}</h1>
           <div>
-            {apps.map(app => <Branch pullRequest={app} key={app.id} />)}
+            {apps.map(app =>
+              <Branch pullRequest={app} key={app.id} />
+            )}
           </div>
           <div className="flex justify-end px-6 py-3">
             <button 
@@ -98,11 +105,12 @@ const Repo = ({ repos }) => {
       </>
         : <div>
           <p>The bubble for this {repoName} is being destroyed; try bubble teardown to see if lambdas are ready to be deleted.</p>
+
           <button onClick={handleTeardownClick}>teardown app</button>
         </div>
         }
     </>
-  )
-}
+  );
+};
 
 export default Repo;
