@@ -1,5 +1,5 @@
 import RepoList from './RepoList.js';
-import bubbleLogo from '../static/images/noun_project_bubbles.png';
+import bubbleLogo from '../static/images/noun_project_bubbles_deleteme.png';
 
 const Sidebar = ({ repos }) => {
   return (
