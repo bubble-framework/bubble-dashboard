@@ -25,7 +25,7 @@ const App = () => {
   return (
     <>
       <div className="relative container mx-auto p-6">
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between z-0">
           <Sidebar repos={repos} />
           <Routes>
             {repos.map((_repo) => <Route path="/:repoName" element={<Repo repos={repos} />} />)}
