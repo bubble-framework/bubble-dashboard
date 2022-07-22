@@ -4,6 +4,8 @@ import { getRepos } from '../services/dataService.js';
 
 import Repo from './Repo.js';
 import Sidebar from './Sidebar.js';
+import Modal from './Modal.js'
+
 
 import {
   Routes,
@@ -25,19 +27,20 @@ const App = () => {
   return (
     <>
       <div className="relative container mx-auto p-6">
-        <div className="flex items-start justify-between z-0">
+        <div className="flex items-start justify-between">
           <Sidebar repos={repos} />
           <Routes>
-            {repos.map((repo) =>
+            {repos.map((repo) => 
               <Route
-                path="/:repoName"
                 key={repo.repoName}
-                element={<Repo repos={repos}/>}
+                path="/:repoName"
+                element={<Repo repos={repos} />}
               />
             )}
           </Routes>
         </div>
       </div>
+      <Modal />
     </>
   );
 };
