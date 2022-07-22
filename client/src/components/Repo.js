@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+
 import Branch from './Branch.js';
+
 import { getCurrentRepoApps, destroyRepo, teardownRepo } from '../services/dataService.js';
 import { confirmAlert } from 'react-confirm-alert';
 
@@ -84,25 +86,29 @@ const Repo = ({ repos }) => {
       <p>{errorMessage}</p>
 
       {status === "active" ?
-
-        <div>
-          <h1>{repoName}</h1>
-
+      <>
+        <div className="relative container mx-auto rounded-lg bg-gradient-to-r from-red-100 to-indigo-200 p-10 grow">
+          <h1 className="text-xl font-bold">{repoName}</h1>
           <div>
             {apps.map(app =>
               <Branch pullRequest={app} key={app.id} />
             )}
           </div>
-
-          <button onClick={handleDestroyClick}>Destroy App</button>
+          <div className="flex justify-end px-6 py-3">
+            <button 
+              className="bg-red-500 rounded-full p-3 text-white font-bold"
+              onClick={handleDestroyClick}>
+              Destroy App
+            </button>
+          </div>
         </div>
-        :
-        <div>
+      </>
+        : <div>
           <p>The bubble for this {repoName} is being destroyed; try bubble teardown to see if lambdas are ready to be deleted.</p>
 
           <button onClick={handleTeardownClick}>teardown app</button>
         </div>
-      }
+        }
     </>
   );
 };
