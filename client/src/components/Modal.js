@@ -1,10 +1,11 @@
 import ModalDialog from './ModalDialog.js';
 
-const Modal = () => {
+const Modal = (props) => {
   return (
-    <div className="bg-zinc-300 w-screen h-screen absolute inset-0 flex justify-center items-center z-50">
-      <ModalDialog />
-    </div>
+    <>
+      <ModalDialog {...props} />
+      <div className="fixed inset-0 z-40 bg-gray-400 opacity-80" />
+    </>
   );
 }
 

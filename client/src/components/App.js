@@ -14,6 +14,9 @@ import {
 
 const App = () => {
   const [repos, setRepos] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [modalAction, setModalAction] = useState(null);
 
   useEffect(() => {
     const getRepoNames = async () => {
@@ -34,13 +37,25 @@ const App = () => {
               <Route
                 key={repo.repoName}
                 path="/:repoName"
-                element={<Repo repos={repos} />}
+                element={<Repo
+                  repos={repos}
+                  setModalVisible={setModalVisible}
+                  setModalMessage={setModalMessage}
+                  setModalAction={setModalAction}
+                />}
               />
             )}
           </Routes>
         </div>
       </div>
-      <Modal />
+      {modalVisible
+        ? <Modal
+            message={modalMessage}
+            onContinue={modalAction}
+            onCancel={() => setModalVisible(false)}
+          />
+        : ''
+      }
     </>
   );
 };

@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Branch from './Branch.js';
+import Button from './Button.js';
 
 import { getCurrentRepoApps, destroyRepo, teardownRepo } from '../services/dataService.js';
 import { confirmAlert } from 'react-confirm-alert';
 
-const Repo = ({ repos }) => {
+const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
   const { repoName } = useParams();
   const [ apps, setApps ] = useState([]);
   const [ status, setStatus ] = useState("");
@@ -32,20 +33,26 @@ const Repo = ({ repos }) => {
 
   const handleDestroyClick = async (e) => {
     e.preventDefault();
+    setModalVisible(true);
 
-    confirmAlert({
-      title: 'Confirm to submit',
-      message: 'Are you sure you want to delete all preview apps for this repo?',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: async () => await destroyRepo(repoName),
-        },
-        {
-          label: 'No',
-        }
-      ]
-    });
+    setModalMessage("This action will teardown all infrastructure associated with preview apps on this branch. Are you sure you want to continue?");
+    setModalVisible(true);
+    setModalAction(async () => await destroyRepo(repoName));
+    setModalVisible(false);
+
+    // confirmAlert({
+    //   title: 'Confirm to submit',
+    //   message: 'Are you sure you want to delete all preview apps for this repo?',
+    //   buttons: [
+    //     {
+    //       label: 'Yes',
+    //       onClick: async () => await destroyRepo(repoName),
+    //     },
+    //     {
+    //       label: 'No',
+    //     }
+    //   ]
+    // });
   }
 
   const teardownAttempt = async () => {
@@ -59,24 +66,30 @@ const Repo = ({ repos }) => {
         setErrorMessage("");
       }, 5000);
     }
+
+    setModalVisible(false);
   }
 
   const handleTeardownClick = async (e) => {
     e.preventDefault();
 
-    confirmAlert({
-      title: 'Confirm to submit',
-      message: 'Lambda deletion may not be ready yet, would you still like to try?',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: async () => await teardownAttempt(),
-        },
-        {
-          label: 'No',
-        }
-      ]
-    });
+    setModalMessage("Lambda functions may not be ready for deletion, but you can still try. Continue?");
+    setModalVisible(true);
+    setModalAction(async () => await teardownAttempt());
+
+    // confirmAlert({
+    //   title: 'Confirm to submit',
+    //   message: 'Lambda deletion may not be ready yet, would you still like to try?',
+    //   buttons: [
+    //     {
+    //       label: 'Yes',
+    //       onClick: async () => await teardownAttempt(),
+    //     },
+    //     {
+    //       label: 'No',
+    //     }
+    //   ]
+    // });
   }
 
   if (!apps && status === "active") return null;
@@ -95,11 +108,11 @@ const Repo = ({ repos }) => {
             )}
           </div>
           <div className="flex justify-end px-6 py-3">
-            <button 
-              className="bg-red-500 rounded-full p-3 text-white font-bold"
-              onClick={handleDestroyClick}>
-              Destroy App
-            </button>
+            <Button
+              text="Destroy App"
+              color="red"
+              onButtonClick={handleDestroyClick}
+            />
           </div>
         </div>
       </>
