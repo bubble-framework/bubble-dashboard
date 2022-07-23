@@ -1,7 +1,7 @@
 # Dashboard interface for Bubble CLI tool
 
 - This app should be used in conjunction with integration of the Bubble framework into your project repository. See the `bubble dashboard` section [here](https://github.com/jjam-bubble/bubble-framework) for more information.
-- To run this app on its own, you may run `npm run dashboard` from the `server` directory, and view it in your browser at [http://localhost:3000](http://localhost:3000).
+- To run this app on its own, you may execute `npm run dashboard` from the `server` directory, and view the app in your browser at [http://localhost:3000](http://localhost:3000).
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app):
 
