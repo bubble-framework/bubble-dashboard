@@ -22,6 +22,16 @@ export const destroyRepo = async (repoName) => {
 }
 
 export const teardownRepo = async (repoName) => {
-  const response = await axios.post(`${baseURL}/${repoName}/teardown`);
-  return response;
+  try {
+    const response = await axios.post(`${baseURL}/${repoName}/teardown`);
+
+    if (response.status !== 200) {
+      throw new Error(response.data);
+    }
+    
+    return response.data;
+  } catch (e) {
+    console.log(e);
+    throw new Error(e.response.data);
+  }
 }

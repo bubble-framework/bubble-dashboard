@@ -1,16 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import BasicDialog from './BasicDialog.js';
+import TeardownDialog from './TeardownDialog.js';
 import Branch from './Branch.js';
+import Button from './Button.js';
 
 import { getCurrentRepoApps, destroyRepo, teardownRepo } from '../services/dataService.js';
-import { confirmAlert } from 'react-confirm-alert';
 
-const Repo = ({ repos }) => {
+const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
+  const NEUTRAL_MESSAGE_COLOR = "zinc";
+  const POSITIVE_MESSAGE_COLOR = "green";
+  const NEGATIVE_MESSAGE_COLOR = "red";
+  
   const { repoName } = useParams();
   const [ apps, setApps ] = useState([]);
   const [ status, setStatus ] = useState("");
-  const [ errorMessage, setErrorMessage ] = useState("");
+
+  const [ message, setMessage ] = useState("");
+  const [ messageColor, setMessageColor ] = useState(NEUTRAL_MESSAGE_COLOR);
 
   useEffect(() => {
     const getApps = async () => {
@@ -30,61 +38,48 @@ const Repo = ({ repos }) => {
     getApps();
   }, [repoName]);
 
-  const handleDestroyClick = async (e) => {
-    e.preventDefault();
+  const handleDestroyClick = async () => {
+    setModalMessage("This action will teardown all infrastructure associated with preview apps on this branch. Are you sure you want to continue?");
+    setModalVisible(true);
 
-    confirmAlert({
-      title: 'Confirm to submit',
-      message: 'Are you sure you want to delete all preview apps for this repo?',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: async () => await destroyRepo(repoName),
-        },
-        {
-          label: 'No',
-        }
-      ]
-    });
+    const destroy = () => {
+      return async () => {
+        await destroyRepo(repoName);
+        setModalVisible(false);
+      } 
+    }
+
+    setModalAction(destroy);
   }
 
   const teardownAttempt = async () => {
     try {
-      await teardownRepo(repoName);
-      setErrorMessage("");
+      const successMessage = await teardownRepo(repoName);
+      console.log(successMessage);
+
+      setMessageColor(POSITIVE_MESSAGE_COLOR);
+      setMessage(successMessage);
     } catch (err) {
-      setErrorMessage(err.request.response);
+      setMessageColor(NEGATIVE_MESSAGE_COLOR);
+      setMessage(err.message);
 
       setTimeout(() => {
-        setErrorMessage("");
+        setMessage("");
       }, 5000);
     }
   }
 
   const handleTeardownClick = async (e) => {
     e.preventDefault();
-
-    confirmAlert({
-      title: 'Confirm to submit',
-      message: 'Lambda deletion may not be ready yet, would you still like to try?',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: async () => await teardownAttempt(),
-        },
-        {
-          label: 'No',
-        }
-      ]
-    });
+    await teardownAttempt();
   }
 
-  if (!apps && status === "active") return null;
+  if (!apps && status === "active") return (
+    <BasicDialog message="Looks like there are no bubbles in this bath! Next time you open a pull request in this repository, check back to see the deployed preview app." />
+  );
 
   return (
     <>
-      <p>{errorMessage}</p>
-
       {status === "active" ?
       <>
         <div className="relative container mx-auto rounded-lg bg-gradient-to-r from-red-100 to-indigo-200 p-10 grow">
@@ -95,18 +90,26 @@ const Repo = ({ repos }) => {
             )}
           </div>
           <div className="flex justify-end px-6 py-3">
-            <button 
-              className="bg-red-500 rounded-full p-3 text-white font-bold"
-              onClick={handleDestroyClick}>
-              Destroy App
-            </button>
+            <Button
+              text="Destroy"
+              color="red"
+              onButtonClick={handleDestroyClick}
+            />
           </div>
         </div>
       </>
-        : <div>
-          <p>The bubble for this {repoName} is being destroyed; try bubble teardown to see if lambdas are ready to be deleted.</p>
-
-          <button onClick={handleTeardownClick}>teardown app</button>
+        :
+        <div className="flex-col w-full">
+          {message
+            ? <p className={`relative container mx-auto rounded-lg border-4 border-${messageColor}-300 p-5 grow mt-4 text-sm`}>
+              {message}
+            </p>
+            : ''
+          }
+        <TeardownDialog
+          repoName={repoName}
+          handleButtonClick={handleTeardownClick}
+        />
         </div>
         }
     </>

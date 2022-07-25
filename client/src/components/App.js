@@ -4,6 +4,8 @@ import { getRepos } from '../services/dataService.js';
 
 import Repo from './Repo.js';
 import Sidebar from './Sidebar.js';
+import Modal from './Modal.js'
+
 
 import {
   Routes,
@@ -12,6 +14,9 @@ import {
 
 const App = () => {
   const [repos, setRepos] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [modalAction, setModalAction] = useState(() => (null));
 
   useEffect(() => {
     const getRepoNames = async () => {
@@ -25,19 +30,32 @@ const App = () => {
   return (
     <>
       <div className="relative container mx-auto p-6">
-        <div className="flex items-start justify-between z-0">
+        <div className="flex items-start justify-between">
           <Sidebar repos={repos} />
           <Routes>
-            {repos.map((repo) =>
+            {repos.map((repo) => 
               <Route
-                path="/:repoName"
                 key={repo.repoName}
-                element={<Repo repos={repos}/>}
+                path="/:repoName"
+                element={<Repo
+                  repos={repos}
+                  setModalVisible={setModalVisible}
+                  setModalMessage={setModalMessage}
+                  setModalAction={setModalAction}
+                />}
               />
             )}
           </Routes>
         </div>
       </div>
+      {modalVisible
+        ? <Modal
+            message={modalMessage}
+            onConfirm={modalAction}
+            onCancel={() => setModalVisible(false)}
+          />
+        : ''
+      }
     </>
   );
 };
