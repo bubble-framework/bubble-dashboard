@@ -5,7 +5,7 @@ const ModalDialog = (props) => {
     message,
     continueText="Yes",
     cancelText="No",
-    onContinue,
+    onConfirm,
     onCancel,
   } = props;
 
@@ -17,7 +17,7 @@ const ModalDialog = (props) => {
           <Button
             text={continueText}
             color="green"
-            onButtonClick={onContinue}
+            onButtonClick={onConfirm}
           />
           <Button
             text={cancelText}

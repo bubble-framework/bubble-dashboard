@@ -38,16 +38,15 @@ const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
     getApps();
   }, [repoName]);
 
-  const handleDestroyClick = async (e) => {
-    e.preventDefault();
-    console.log('destroy click done been clicked!');
-
+  const handleDestroyClick = async () => {
     setModalMessage("This action will teardown all infrastructure associated with preview apps on this branch. Are you sure you want to continue?");
     setModalVisible(true);
 
-    const destroy = async () => {
-      await destroyRepo(repoName);
-      setModalVisible(false);
+    const destroy = () => {
+      return async () => {
+        await destroyRepo(repoName);
+        setModalVisible(false);
+      } 
     }
 
     setModalAction(destroy);

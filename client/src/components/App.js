@@ -51,7 +51,7 @@ const App = () => {
       {modalVisible
         ? <Modal
             message={modalMessage}
-            onContinue={modalAction}
+            onConfirm={modalAction}
             onCancel={() => setModalVisible(false)}
           />
         : ''
