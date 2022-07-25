@@ -26,7 +26,6 @@ const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
       setMessage(WAIT_TO_POPULATE_MSG);
       const apps = await getCurrentRepoApps(repoName);
       setMessage('');
-      // console.log(apps);
       setApps(apps);
     };
 
@@ -59,7 +58,6 @@ const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
   const teardownAttempt = async () => {
     try {
       const successMessage = await teardownRepo(repoName);
-      // console.log(successMessage);
 
       setMessageColor(POSITIVE_MESSAGE_COLOR);
       setMessage(successMessage);
@@ -77,10 +75,6 @@ const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
     e.preventDefault();
     await teardownAttempt();
   }
-
-  // if (!apps && status === "active") return (
-  //   <BasicDialog message="Looks like there are no bubbles in this bath! Next time you open a pull request in this repository, check back to see the deployed preview app." />
-  // );
 
   return (
     <>
