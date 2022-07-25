@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import BasicDialog from './BasicDialog.js';
 import Branch from './Branch.js';
 import Button from './Button.js';
 
 import { getCurrentRepoApps, destroyRepo, teardownRepo } from '../services/dataService.js';
-import { confirmAlert } from 'react-confirm-alert';
 
 const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
   const NEUTRAL_MESSAGE_COLOR = "zinc";
@@ -39,26 +39,17 @@ const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
 
   const handleDestroyClick = async (e) => {
     e.preventDefault();
-    setModalVisible(true);
+    console.log('destroy click done been clicked!');
 
     setModalMessage("This action will teardown all infrastructure associated with preview apps on this branch. Are you sure you want to continue?");
     setModalVisible(true);
-    setModalAction(async () => await destroyRepo(repoName));
-    setModalVisible(false);
 
-    // confirmAlert({
-    //   title: 'Confirm to submit',
-    //   message: 'Are you sure you want to delete all preview apps for this repo?',
-    //   buttons: [
-    //     {
-    //       label: 'Yes',
-    //       onClick: async () => await destroyRepo(repoName),
-    //     },
-    //     {
-    //       label: 'No',
-    //     }
-    //   ]
-    // });
+    const destroy = async () => {
+      await destroyRepo(repoName);
+      setModalVisible(false);
+    }
+
+    setModalAction(destroy);
   }
 
   const teardownAttempt = async () => {
@@ -70,7 +61,7 @@ const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
       setMessage(successMessage);
     } catch (err) {
       setMessageColor(NEGATIVE_MESSAGE_COLOR);
-      setMessage(err);
+      setMessage(err.message);
 
       setTimeout(() => {
         setMessage("");
@@ -80,25 +71,12 @@ const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
 
   const handleTeardownClick = async (e) => {
     e.preventDefault();
-
-    setModalAction(async () => await teardownAttempt());
-
-    // confirmAlert({
-    //   title: 'Confirm to submit',
-    //   message: 'Lambda deletion may not be ready yet, would you still like to try?',
-    //   buttons: [
-    //     {
-    //       label: 'Yes',
-    //       onClick: async () => await teardownAttempt(),
-    //     },
-    //     {
-    //       label: 'No',
-    //     }
-    //   ]
-    // });
+    await teardownAttempt();
   }
 
-  if (!apps && status === "active") return null;
+  if (!apps && status === "active") return (
+    <BasicDialog message="Looks like there are no bubbles in this bath! Next time you open a pull request in this repository, check back to see the deployed preview app." />
+  );
 
   return (
     <>
