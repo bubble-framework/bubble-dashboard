@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import BasicDialog from './BasicDialog.js';
+import BasicDialogWithButton from './BasicDialogWithButton.js';
 import Branch from './Branch.js';
 import Button from './Button.js';
 
@@ -98,7 +99,7 @@ const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
           </div>
         </div>
       </>
-        : 
+        :
         <div className="flex-col w-full">
           {message
             ? <p className={`relative container mx-auto rounded-lg border-4 border-${messageColor}-300 p-5 grow mt-4 text-sm`}>
@@ -106,20 +107,12 @@ const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
             </p>
             : ''
           }
-          <div className="relative container mx-auto rounded-lg border-4 border-indigo-300 p-10 grow mt-9">
-            <div className="flex-col">
-              <p className="mb-6">
-                The bubble for the repository <span className="font-bold">{repoName}</span> is being destroyed. Try tearing down to see if Lambdas are ready to be deleted.
-              </p>
-              <div className="flex justify-center">
-                <Button
-                  text="Teardown"
-                  color="red"
-                  onButtonClick={handleTeardownClick}
-                />
-              </div>
-            </div>
-        </div>
+        <BasicDialogWithButton
+          message={`The bubble for the repository <span className="font-bold">{repoName}</span> is being destroyed. Try tearing down to see if Lambdas are ready to be deleted.`}
+          buttonText="Teardown"
+          buttonColor="red"
+          handleButtonClick={handleTeardownClick}
+        />
         </div>
         }
     </>

@@ -32,6 +32,6 @@ export const teardownRepo = async (repoName) => {
     return response.data;
   } catch (e) {
     console.log(e);
-    throw new Error(e);
+    throw new Error(e.response.data);
   }
 }

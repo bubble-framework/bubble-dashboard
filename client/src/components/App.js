@@ -16,7 +16,7 @@ const App = () => {
   const [repos, setRepos] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
-  const [modalAction, setModalAction] = useState(null);
+  const [modalAction, setModalAction] = useState(() => (null));
 
   useEffect(() => {
     const getRepoNames = async () => {
