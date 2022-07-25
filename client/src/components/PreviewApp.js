@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
 
 const PreviewApp = ({ detail }) => {
-  const createDate = new Date(detail.created_at);
+  const createDate = new Date(detail.createdAt);
   const formattedDate = `${createDate.getMonth() + 1}/${createDate.getDate()}/${String(createDate.getFullYear()).slice(2)}`;
 
   return (
@@ -22,10 +22,10 @@ const PreviewApp = ({ detail }) => {
           </ul>
           <ul className="flex items-start justify-between">
             <li className="rounded-full bg-gradient-to-r from-indigo-400 to-blue-600 text-sm text-white py-1 px-3">
-              {detail.commit_id}
+              {detail.commitId}
             </li>
             <li className="py-1">
-              {detail.commit_message}
+              {detail.commitMessage}
             </li>
             <li className="py-1">
               {formattedDate}
