@@ -29,7 +29,7 @@ const parseTable = async (table) => {
         detail.commitId = commit.M.CommitId.S.slice(0, 7);
         detail.commitMessage = commit.M.CommitMessageHeader.S;
         detail.createdAt = commit.M.CreatedAt.S;
-        detail.logUrl = commit.M.BuildLogURL.S;
+        // detail.logUrl = commit.M.BuildLogURL.S;
         detail.url = 'https://' + commit.M.CloudfrontSubdomain.S + '.cloudfront.net';
         PRInfo.commits.push(detail);
       })
