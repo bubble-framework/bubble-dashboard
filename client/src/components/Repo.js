@@ -86,33 +86,37 @@ const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
     <>
       {status === "active" ?
         <>
-        {apps.length > 0
+        {message
           ?
-          <div className="relative container mx-auto rounded-lg bg-gradient-to-r from-red-100 to-indigo-200 p-10 grow">
-            <h1 className="text-xl font-bold">{repoName}</h1>
-            <div>
-              {apps.map(app =>
-                <Branch pullRequest={app} key={app.id} />
-              )}
-            </div>
-            <div className="flex justify-end px-6 py-3">
-              {message !== WAIT_TO_POPULATE_MSG
-                ? <Button
-                  text="Destroy"
-                  color="red"
-                  onButtonClick={handleDestroyClick}
-                />
-                : ''
-              }
-            </div>
-          </div>
+          <BasicDialog message={message} />
           :
-          <BasicDialog message="Looks like there are no bubbles in this bath! Next time you open a pull request in this repository, check back to see the deployed preview app." />
+          <>
+            {apps.length > 0 && message !== WAIT_TO_POPULATE_MSG
+              ?
+              <div className="relative container mx-auto rounded-lg bg-gradient-to-r from-red-100 to-indigo-200 p-10 grow">
+                <h1 className="text-xl font-bold">{repoName}</h1>
+                <div>
+                  {apps.map(app =>
+                    <Branch pullRequest={app} key={app.id} />
+                  )}
+                </div>
+                <div className="flex justify-end px-6 py-3">
+                  <Button
+                    text="Destroy"
+                    color="red"
+                    onButtonClick={handleDestroyClick}
+                  />
+                </div>
+              </div>
+              :
+              <BasicDialog message="Looks like there are no bubbles in this bath! Next time you open a pull request in this repository, check back to see the deployed preview app." />
+            }
+          </>
         }
         </>
         :
         <div className="flex-col w-full">
-          {message
+          {message && message !== WAIT_TO_POPULATE_MSG
             ? <p className={`relative container mx-auto rounded-lg border-4 border-${messageColor}-300 p-5 grow mt-4 text-sm`}>
               {message}
             </p>
