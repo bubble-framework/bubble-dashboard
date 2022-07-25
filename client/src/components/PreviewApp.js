@@ -1,5 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { faFileLines } from '@fortawesome/free-solid-svg-icons';
 
 const PreviewApp = ({ detail }) => {
   const createDate = new Date(detail.createdAt);
@@ -33,7 +34,10 @@ const PreviewApp = ({ detail }) => {
           </ul>
         </div>
         <a className="p-2" href={detail.url}>
-          {<FontAwesomeIcon icon={faUpRightFromSquare} />}
+          {<FontAwesomeIcon title="View Preview App" icon={faUpRightFromSquare} />}
+        </a>
+        <a className="p-2" href={detail.url}>
+          {<FontAwesomeIcon title="View Build Logs" icon={faFileLines} />}
         </a>
       </section>
     </>
