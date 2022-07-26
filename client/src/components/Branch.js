@@ -6,7 +6,7 @@ const Branch = ({ pullRequest }) => {
       <h2 className="text-lg font-semibold pb-3">
         {pullRequest.name} #{pullRequest.id}
       </h2>
-      <ul className="flex items-start justify-between">
+      <ul className="flex-col items-start justify-between divide-y divide-indigo-200">
         {pullRequest.commits.map(app => <PreviewApp detail={app} key={app.commit_id} />)}
       </ul>
     </div>

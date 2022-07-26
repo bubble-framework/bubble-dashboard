@@ -8,7 +8,7 @@ const PreviewApp = ({ detail }) => {
 
   return (
     <>
-      <section className="w-full h-5/6 flex items-start justify-between">
+      <section className="w-full h-5/6 flex items-start justify-between pb-4">
         <div className="w-5/6 p-2">
           <ul className="flex items-start justify-between">
             <li className="py-1 text-xs">
@@ -33,10 +33,10 @@ const PreviewApp = ({ detail }) => {
             </li>
           </ul>
         </div>
-        <a className="p-2" href={detail.url}>
+        <a className="p-2 self-center" href={detail.url}>
           {<FontAwesomeIcon title="View Preview App" icon={faUpRightFromSquare} />}
         </a>
-        <a className="p-2" href={detail.url}>
+        <a className="p-2 self-center" href={detail.logUrl}>
           {<FontAwesomeIcon title="View Build Logs" icon={faFileLines} />}
         </a>
       </section>
