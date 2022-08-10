@@ -90,7 +90,7 @@ const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
           <>
             {apps.length > 0 && message !== WAIT_TO_POPULATE_MSG
               ?
-              <div className="relative container mx-auto rounded-lg bg-gradient-to-r from-red-100 to-indigo-200 p-10 grow">
+              <div className="relative container mx-auto rounded-lg bg-gradient-to-r from-bubble-gradient-dark via-bubble-gradient-mid to-bubble-gradient-dark p-10 grow">
                 <h1 className="text-xl font-bold">{repoName}</h1>
                 <div>
                   {apps.map(app =>

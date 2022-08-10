@@ -22,7 +22,7 @@ const PreviewApp = ({ detail }) => {
             </li>
           </ul>
           <ul className="flex items-start justify-between">
-            <li className="rounded-full bg-gradient-to-r from-indigo-400 to-blue-600 text-sm text-white py-1 px-3">
+            <li className="rounded-full bg-bubble-dark-blue text-sm text-white py-1 px-3">
               {detail.commitId}
             </li>
             <li className="py-1">
