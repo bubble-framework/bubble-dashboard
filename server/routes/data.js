@@ -34,12 +34,16 @@ router.post('/:repoName/teardown', async function (req, res, next) {
   const name = req.params.repoName;
   const path = getAllRepos().find(repo => repo.repoName === name).filePath;
   process.chdir(path);
+  
   exec(`bubble teardown`, async (err, stdout, stderr) => {
     if (err) {
       console.error(err)
       res.status(500).send("Something went wrong");
+      return;
     }
+
     console.log(stdout);
+
     if (stdout.includes("some Lambdas are not ready to be deleted yet")) {
       res.status(500).send("Lambdas not ready to be deleted yet, please try again later");
     } else {

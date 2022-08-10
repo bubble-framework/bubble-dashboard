@@ -49,6 +49,9 @@ const Repo = ({ repos, setModalVisible, setModalMessage, setModalAction }) => {
       return async () => {
         await destroyRepo(repoName);
         setModalVisible(false);
+        setMessage("We'll get to work emptying this bath!");
+
+        setTimeout(() => setMessage(''), 5000);
       }
     }
 
